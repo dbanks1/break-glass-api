@@ -1,0 +1,59 @@
+﻿<div class="jumbotron">
+    <h1>Break Glass API</h1>
+    <p class="lead">Simple API for the data transfer between the front-end app and the backend database. More info in the API section.</p>
+</div>
+<div class="row">
+    <div class="col-md-3">
+        <h2>/api/Staffs</h2>
+        <p>To access staff data.</p>
+        <p>Example response:</p>
+        <pre><code>{
+    "StaffId": 1,
+    "FullName": "Test Name",
+    "Email": "test@test.com",
+    "Role": "Tester",
+    "Active": true,
+    "StaffRequests": []
+    }
+</code></pre>
+    </div>
+    <div class="col-md-3">
+        <h2>/api/Requests</h2>
+        <p>To get request data.</p>
+        <p>Example response:</p>
+        <pre><code>{
+    "RequestId": 1,
+    "Submitter": "Test Name",
+    "Email": "test@test.com",
+    "SubmissionDate": "2018-10-31T00:00:00",
+    "SubmissionTime": "17:07:00",
+    "Ward": "8",
+    "WardMatron": "Linda Williams",
+    "ConsideredOptions": "None",
+    "Status": "Pending",
+    "ShiftId": 1,
+    "Shift": null,
+    "StaffRequests": []
+    }</code></pre>
+    </div>
+    <div class="col-md-3">
+        <h2>/api/Shifts</h2>
+        <p>To get shift data.</p>
+        <p>Example response:</p>
+        <pre><code>{
+    "ShiftId": 3,
+    "StartDate": "2018-11-21T00:00:00",
+    "StartTime": "22:00:00",
+    "EndTime": "07:00:00",
+    "Type": "Night",
+    "UnfilledReason": "No Staff",
+    "GKey": true,
+    "Requests": []
+    }
+</code></pre>
+    </div>
+    <div class="col-md-3">
+        <h2>/api/StaffRequests</h2>
+        <p>To get data relating to staff and their requests.</p>
+    </div>
+</div>

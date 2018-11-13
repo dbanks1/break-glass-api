@@ -1,0 +1,301 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="webprobgdbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Requests">
+          <Key>
+            <PropertyRef Name="RequestId" />
+          </Key>
+          <Property Name="RequestId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Submitter" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="Email" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="SubmissionDate" Type="date" Nullable="false" />
+          <Property Name="SubmissionTime" Type="time" Precision="2" Nullable="false" />
+          <Property Name="Ward" Type="varchar" MaxLength="32" Nullable="false" />
+          <Property Name="WardMatron" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="ConsideredOptions" Type="text" Nullable="false" />
+          <Property Name="Status" Type="varchar" MaxLength="8" Nullable="false" />
+          <Property Name="ShiftId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Shifts">
+          <Key>
+            <PropertyRef Name="ShiftId" />
+          </Key>
+          <Property Name="ShiftId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="StartDate" Type="date" Nullable="false" />
+          <Property Name="StartTime" Type="time" Precision="2" Nullable="false" />
+          <Property Name="EndTime" Type="time" Precision="2" Nullable="false" />
+          <Property Name="Type" Type="varchar" MaxLength="32" Nullable="false" />
+          <Property Name="UnfilledReason" Type="text" Nullable="false" />
+          <Property Name="GKey" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Staff">
+          <Key>
+            <PropertyRef Name="StaffId" />
+          </Key>
+          <Property Name="StaffId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FullName" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="Email" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="Role" Type="varchar" MaxLength="64" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="StaffRequests">
+          <Key>
+            <PropertyRef Name="StaffRequestsId" />
+          </Key>
+          <Property Name="StaffRequestsId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Requests_RequestId" Type="int" Nullable="false" />
+          <Property Name="Staff_StaffId" Type="int" Nullable="false" />
+          <Property Name="WardMatron" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="Submitter" Type="varchar" MaxLength="128" Nullable="false" />
+        </EntityType>
+        <Association Name="Requests_Shifts">
+          <End Role="Shifts" Type="Self.Shifts" Multiplicity="1" />
+          <End Role="Requests" Type="Self.Requests" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Shifts">
+              <PropertyRef Name="ShiftId" />
+            </Principal>
+            <Dependent Role="Requests">
+              <PropertyRef Name="ShiftId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="StaffRequests_Requests">
+          <End Role="Requests" Type="Self.Requests" Multiplicity="1" />
+          <End Role="StaffRequests" Type="Self.StaffRequests" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Requests">
+              <PropertyRef Name="RequestId" />
+            </Principal>
+            <Dependent Role="StaffRequests">
+              <PropertyRef Name="Requests_RequestId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="StaffRequests_Staff">
+          <End Role="Staff" Type="Self.Staff" Multiplicity="1" />
+          <End Role="StaffRequests" Type="Self.StaffRequests" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Staff">
+              <PropertyRef Name="StaffId" />
+            </Principal>
+            <Dependent Role="StaffRequests">
+              <PropertyRef Name="Staff_StaffId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="webprobgdbModelStoreContainer">
+          <EntitySet Name="Requests" EntityType="Self.Requests" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Shifts" EntityType="Self.Shifts" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Staff" EntityType="Self.Staff" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="StaffRequests" EntityType="Self.StaffRequests" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="Requests_Shifts" Association="Self.Requests_Shifts">
+            <End Role="Shifts" EntitySet="Shifts" />
+            <End Role="Requests" EntitySet="Requests" />
+          </AssociationSet>
+          <AssociationSet Name="StaffRequests_Requests" Association="Self.StaffRequests_Requests">
+            <End Role="Requests" EntitySet="Requests" />
+            <End Role="StaffRequests" EntitySet="StaffRequests" />
+          </AssociationSet>
+          <AssociationSet Name="StaffRequests_Staff" Association="Self.StaffRequests_Staff">
+            <End Role="Staff" EntitySet="Staff" />
+            <End Role="StaffRequests" EntitySet="StaffRequests" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="webprobgdbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Request">
+          <Key>
+            <PropertyRef Name="RequestId" />
+          </Key>
+          <Property Name="RequestId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Submitter" Type="String" MaxLength="128" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="128" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="SubmissionDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="SubmissionTime" Type="Time" Nullable="false" Precision="2" />
+          <Property Name="Ward" Type="String" MaxLength="32" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="WardMatron" Type="String" MaxLength="128" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ConsideredOptions" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Status" Type="String" MaxLength="8" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ShiftId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Shift" Relationship="Self.Requests_Shifts" FromRole="Requests" ToRole="Shifts" />
+          <NavigationProperty Name="StaffRequests" Relationship="Self.StaffRequests_Requests" FromRole="Requests" ToRole="StaffRequests" />
+        </EntityType>
+        <EntityType Name="Shift">
+          <Key>
+            <PropertyRef Name="ShiftId" />
+          </Key>
+          <Property Name="ShiftId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StartDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="StartTime" Type="Time" Nullable="false" Precision="2" />
+          <Property Name="EndTime" Type="Time" Nullable="false" Precision="2" />
+          <Property Name="Type" Type="String" MaxLength="32" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="UnfilledReason" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="GKey" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Requests" Relationship="Self.Requests_Shifts" FromRole="Shifts" ToRole="Requests" />
+        </EntityType>
+        <EntityType Name="Staff">
+          <Key>
+            <PropertyRef Name="StaffId" />
+          </Key>
+          <Property Name="StaffId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FullName" Type="String" MaxLength="128" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="128" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Role" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="StaffRequests" Relationship="Self.StaffRequests_Staff" FromRole="Staff" ToRole="StaffRequests" />
+        </EntityType>
+        <EntityType Name="StaffRequest">
+          <Key>
+            <PropertyRef Name="StaffRequestsId" />
+          </Key>
+          <Property Name="StaffRequestsId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Requests_RequestId" Type="Int32" Nullable="false" />
+          <Property Name="Staff_StaffId" Type="Int32" Nullable="false" />
+          <Property Name="WardMatron" Type="String" MaxLength="128" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Submitter" Type="String" MaxLength="128" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Request" Relationship="Self.StaffRequests_Requests" FromRole="StaffRequests" ToRole="Requests" />
+          <NavigationProperty Name="Staff" Relationship="Self.StaffRequests_Staff" FromRole="StaffRequests" ToRole="Staff" />
+        </EntityType>
+        <Association Name="Requests_Shifts">
+          <End Role="Shifts" Type="Self.Shift" Multiplicity="1" />
+          <End Role="Requests" Type="Self.Request" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Shifts">
+              <PropertyRef Name="ShiftId" />
+            </Principal>
+            <Dependent Role="Requests">
+              <PropertyRef Name="ShiftId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="StaffRequests_Requests">
+          <End Role="Requests" Type="Self.Request" Multiplicity="1" />
+          <End Role="StaffRequests" Type="Self.StaffRequest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Requests">
+              <PropertyRef Name="RequestId" />
+            </Principal>
+            <Dependent Role="StaffRequests">
+              <PropertyRef Name="Requests_RequestId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="StaffRequests_Staff">
+          <End Role="Staff" Type="Self.Staff" Multiplicity="1" />
+          <End Role="StaffRequests" Type="Self.StaffRequest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Staff">
+              <PropertyRef Name="StaffId" />
+            </Principal>
+            <Dependent Role="StaffRequests">
+              <PropertyRef Name="Staff_StaffId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="webprobgdbEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Requests" EntityType="Self.Request" />
+          <EntitySet Name="Shifts" EntityType="Self.Shift" />
+          <EntitySet Name="Staffs" EntityType="Self.Staff" />
+          <EntitySet Name="StaffRequests" EntityType="Self.StaffRequest" />
+          <AssociationSet Name="Requests_Shifts" Association="Self.Requests_Shifts">
+            <End Role="Shifts" EntitySet="Shifts" />
+            <End Role="Requests" EntitySet="Requests" />
+          </AssociationSet>
+          <AssociationSet Name="StaffRequests_Requests" Association="Self.StaffRequests_Requests">
+            <End Role="Requests" EntitySet="Requests" />
+            <End Role="StaffRequests" EntitySet="StaffRequests" />
+          </AssociationSet>
+          <AssociationSet Name="StaffRequests_Staff" Association="Self.StaffRequests_Staff">
+            <End Role="Staff" EntitySet="Staffs" />
+            <End Role="StaffRequests" EntitySet="StaffRequests" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="webprobgdbModelStoreContainer" CdmEntityContainer="webprobgdbEntities">
+          <EntitySetMapping Name="Requests">
+            <EntityTypeMapping TypeName="webprobgdbModel.Request">
+              <MappingFragment StoreEntitySet="Requests">
+                <ScalarProperty Name="RequestId" ColumnName="RequestId" />
+                <ScalarProperty Name="Submitter" ColumnName="Submitter" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="SubmissionDate" ColumnName="SubmissionDate" />
+                <ScalarProperty Name="SubmissionTime" ColumnName="SubmissionTime" />
+                <ScalarProperty Name="Ward" ColumnName="Ward" />
+                <ScalarProperty Name="WardMatron" ColumnName="WardMatron" />
+                <ScalarProperty Name="ConsideredOptions" ColumnName="ConsideredOptions" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="ShiftId" ColumnName="ShiftId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Shifts">
+            <EntityTypeMapping TypeName="webprobgdbModel.Shift">
+              <MappingFragment StoreEntitySet="Shifts">
+                <ScalarProperty Name="ShiftId" ColumnName="ShiftId" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+                <ScalarProperty Name="EndTime" ColumnName="EndTime" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="UnfilledReason" ColumnName="UnfilledReason" />
+                <ScalarProperty Name="GKey" ColumnName="GKey" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Staffs">
+            <EntityTypeMapping TypeName="webprobgdbModel.Staff">
+              <MappingFragment StoreEntitySet="Staff">
+                <ScalarProperty Name="StaffId" ColumnName="StaffId" />
+                <ScalarProperty Name="FullName" ColumnName="FullName" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Role" ColumnName="Role" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="StaffRequests">
+            <EntityTypeMapping TypeName="webprobgdbModel.StaffRequest">
+              <MappingFragment StoreEntitySet="StaffRequests">
+                <ScalarProperty Name="StaffRequestsId" ColumnName="StaffRequestsId" />
+                <ScalarProperty Name="Requests_RequestId" ColumnName="Requests_RequestId" />
+                <ScalarProperty Name="Staff_StaffId" ColumnName="Staff_StaffId" />
+                <ScalarProperty Name="WardMatron" ColumnName="WardMatron" />
+                <ScalarProperty Name="Submitter" ColumnName="Submitter" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
